@@ -3,29 +3,12 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator,MinValueValidator
 
 STATE_CHOICE = (
-    ('Abbotabad','Abbotabad'),
-    ('Ahmadpur East','Ahmadpur East'),
-    ('Bahawalnagar','Bahawalnagar'),
-    ('Bahawalpur','Bahawalpur'),
-    ('Chakwal','Chakwal'),
-    ('Chiniot','Chiniot'),
-    ('Dera Ismail Khan','Dera Ismail Khan'),
-    ('Faisalabad','Faisalabad'),
-    ('Gujranwala','Gujranwala'),
-    ('Hyderabad','Hyderabad'),
-    ('Islamabad','Islamabad'),
-    ('Jhelum','Jhelum'),
-    ('Karachi','Karachi'),
-    ('Khanpur','Khanpur'),
-    ('Kohat','Kohat'),
-    ('Lahore','Lahore'),
-    ('Okara','Okara'),
-    ('Peshawar','Peshawar'),
-    ('Quetta','Quetta'),
-    ('Rawalpindi','Rawalpindi'),
-    ('Sargodha','Sargodha'),
-    ('Swabi','Swabi'),
-    ('Sialkot','Sialkot'),
+    ('Punjab','Punjab'),
+    ('Sindh','Sindh'),
+    ('Balochistan','Balochistan'),
+    ('KPK','KPK'),
+    ('Azad Kashmir','Azad Kashmir'),
+    
 
 )
 class Customer(models.Model):
@@ -38,6 +21,8 @@ class Customer(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+
 CATEGORY_CHOICES = (
     ('M','Mobile'),
     ('L','Laptope'),
@@ -63,7 +48,9 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
-    
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.discounted_price
 STATUS_CHOICES = (
     ('Accepted','Accepted'),
     ('Packed','Packed'),
@@ -79,4 +66,8 @@ class OrderPlaced(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     ordered_date = models.DateTimeField(auto_now_add = True)
     status = models.CharField(choices=STATUS_CHOICES,max_length=50,default='Pending')
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.discounted_price
 
