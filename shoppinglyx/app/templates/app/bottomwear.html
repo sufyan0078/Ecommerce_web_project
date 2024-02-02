@@ -1,27 +1,23 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Mobile{% endblock title %}
+{% block title %}Bottom Wear{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
   <div class="col-sm-3">
    <div class="list-group">
-    <a href="{% url "mobile" %}" class="list-group-item list-group-item-action
-    " aria-current="True" >All Mobile</a>
-    <a href="{% url "mobiledata" 'Oppo' %}" class="list-group-item list-group-item-action
-    " aria-current="True" >Oppo</a>
-    <a href="{% url "mobiledata" 'Samsung' %}" class="list-group-item list-group-item-action
-    " aria-current="True" >Samsung</a>
-    <a href="{% url "mobiledata" 'Above' %}" class="list-group-item list-group-item-action
-    " aria-current="True" >Above 50k</a>
-    <a href="{% url "mobiledata" 'Below' %}" class="list-group-item list-group-item-action
-    " aria-current="True" >Below 50k</a>
+    <a href="{% url "bottomwear" %}" class="list-group-item list-group-item-action
+    " aria-current="True" >All Bottomwear</a>
+    <a href="{% url "bottomweardata" 'Above' %}" class="list-group-item list-group-item-action
+    " aria-current="True" >Above 1000</a>
+    <a href="{% url "bottomweardata" 'Below' %}" class="list-group-item list-group-item-action
+    " aria-current="True" >Below 1000</a>
 </div>
   </div>
   <div class="col-sm-8">
     
     <div class="row">
-    {% for product in mobiles %}
+    {% for product in bottomwear %}
     <div class="col-sm-4 text-center mb-4 px-3">
     <a href="{% url 'product-detail' product.id %}" class="btn">
     <div class="item">
@@ -32,7 +28,6 @@
     </div>
     </a>
     </div>
-    
     </div>
     {% endfor %}
    </div>

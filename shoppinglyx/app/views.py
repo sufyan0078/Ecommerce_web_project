@@ -14,11 +14,11 @@ class ProductView(View):
   topwear = Product.objects.filter(category="TW")
   mobile = Product.objects.filter(category="M")
   bottomwear = Product.objects.filter(category="BW")
+  laptop = Product.objects.filter(category="L")
   current_items = 0
   if request.user.is_authenticated:
    current_items = len(Cart.objects.filter(user=request.user))
-  return render(request, 'app/home.html',{'topwear':topwear,
-                                          'bottomwear':bottomwear,"mobile":mobile,'current_items':current_items})
+  return render(request, 'app/home.html',{'topwear':topwear,'bottomwear':bottomwear,"mobile":mobile,'laptop':laptop,'current_items':current_items})
 # def product_detail(request):
 #  return render(request, 'app/productdetail.html')
 class ProductDetailView(View):
@@ -37,7 +37,12 @@ def add_to_cart(request):
  user = request.user
  product_id = request.GET.get('prod_id')
  product = Product.objects.get(id=product_id)
- Cart(user=user,product=product).save()
+ cart_item, created = Cart.objects.get_or_create(user=user,product=product)
+ if created:
+  cart_item.quantity = 1
+ else:
+  cart_item.quantity += 1
+ cart_item.save()
  current_items = 0
  if request.user.is_authenticated:
   current_items = len(Cart.objects.filter(user=request.user))
@@ -189,6 +194,44 @@ def mobile(request, data=None):
  if request.user.is_authenticated:
   current_items = len(Cart.objects.filter(user=request.user))
  return render(request, 'app/mobile.html',{"mobiles":mobiles,'current_items':current_items})
+
+def laptop(request, data=None):
+ if data == None:
+  laptop = Product.objects.filter(category="L")
+ elif data == "Dell" or data == "HP":
+  laptop = Product.objects.filter(category="L").filter(brand=data)
+ elif data == "Below":
+  laptop = Product.objects.filter(category="L").filter(discounted_price__lt=150000)
+ elif data == "Above":
+  laptop = Product.objects.filter(category="L").filter(discounted_price__gt=50000)
+ current_items = 0
+ if request.user.is_authenticated:
+  current_items = len(Cart.objects.filter(user=request.user))
+ return render(request, 'app/laptop.html',{"laptop":laptop,'current_items':current_items})
+
+def topwear(request, data=None):
+ if data == None:
+  topwear = Product.objects.filter(category="TW")
+ elif data == "Below":
+  topwear = Product.objects.filter(category="TW").filter(discounted_price__lt=600)
+ elif data == "Above":
+  topwear = Product.objects.filter(category="TW").filter(discounted_price__gt=1000)
+ current_items = 0
+ if request.user.is_authenticated:
+  current_items = len(Cart.objects.filter(user=request.user))
+ return render(request, 'app/topwear.html',{"topwear":topwear,'current_items':current_items})
+
+def bottomwear(request, data=None):
+ if data == None:
+  bottomwear = Product.objects.filter(category="BW")
+ elif data == "Below":
+  bottomwear = Product.objects.filter(category="BW").filter(discounted_price__lt=600)
+ elif data == "Above":
+  bottomwear = Product.objects.filter(category="BW").filter(discounted_price__gt=1000)
+ current_items = 0
+ if request.user.is_authenticated:
+  current_items = len(Cart.objects.filter(user=request.user))
+ return render(request, 'app/bottomwear.html',{"bottomwear":bottomwear,'current_items':current_items})
 
 def login(request):
  return render(request, 'app/login.html')

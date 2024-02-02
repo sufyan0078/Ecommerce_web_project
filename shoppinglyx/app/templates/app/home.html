@@ -46,7 +46,7 @@
 {% block main-content %}
 <!-- 1st Product Slider -->
 <div class="m-3">
- <h2>ShoppinglyX Bottom Wear</h2>
+ <h2>NexaMarket Bottom Wear</h2>
  <!-- Slider 1 -->
  <div class="owl-carousel" id="slider1">
   {% for b in bottomwear %}
@@ -93,7 +93,7 @@
 
 <!-- 2nd Product Slider -->
 <div class="mx-3">
- <h2>ShoppinglyX Trending Mobiles</h2>
+ <h2>NexaMarket Trending Mobiles</h2>
  <!-- Slider 2 -->
  <div class="owl-carousel" id="slider2">
   {% for m in mobile %}
@@ -108,8 +108,7 @@
 
 <!-- 3nd Product Slider -->
 <div class="mx-3">
-  <h2>ShoppinglyX Top Wear</h2>
-  <!-- Slider 2 -->
+  <h2>NexaMarket Top Wear</h2>
   <div class="owl-carousel" id="slider3">
    {% for tp in topwear %}
    <a href="{% url "product-detail" tp.id %}" class="btn">
@@ -118,5 +117,17 @@
   </div>
  </div>
  <!-- End 3nd Product Slider -->
+
+ <!-- 4th Product Slider -->
+<div class="mx-3">
+  <h2>NexaMarket Laptop</h2>
+  <div class="owl-carousel" id="slider3">
+   {% for lp in laptop %}
+   <a href="{% url "product-detail" lp.id %}" class="btn">
+   <div class="item"><img src="{{lp.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{lp.title}}</span><br><span class="fs-5">{{lp.discounted_price}}</span></div></a>
+   {% endfor %}
+  </div>
+ </div>
+ <!-- End 4th Product Slider -->
 {% endblock main-content %}
 
