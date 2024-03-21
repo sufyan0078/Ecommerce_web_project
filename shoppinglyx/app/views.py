@@ -254,16 +254,18 @@ def checkout(request):
  usr = request.user
  address = Customer.objects.filter(user=usr)
  cart_items = Cart.objects.filter(user=usr)
- if request.user.is_authenticated:
-   current_items = len(Cart.objects.filter(user=request.user))
+ current_items = 0
  amount = 0.0
  shipping_cost = 70.0
- cart_product = [p for p in Cart.objects.all() if p.user==request.user]
+ total = amount + shipping_cost  # Initialize total here with a default value
+ cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+
  if cart_product:
   for p in cart_product:
-   tempamount = (p.quantity * p.product.discounted_price)
-   amount += tempamount
-   total = amount + shipping_cost
+    tempamount = (p.quantity * p.product.discounted_price)
+    amount += tempamount
+    total = amount + shipping_cost
+    current_items = len(cart_product)
  return render(request, 'app/checkout.html',{'address':address,'cart_items':cart_items,'total':total,'current_items':current_items})
 
 @login_required
